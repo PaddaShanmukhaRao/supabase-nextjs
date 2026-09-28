@@ -21,6 +21,11 @@ export default function Avatar({
   useEffect(() => {
     async function downloadImage(path: string) {
       try {
+        if (path.startsWith('http')) {
+          setAvatarUrl(path)
+          return
+        }
+        
         const { data, error } = await supabase.storage.from('avatars').download(path)
         if (error) {
           throw error
@@ -56,7 +61,7 @@ export default function Avatar({
 
       onUpload(filePath)
     } catch (error) {
-      alert('Error uploading avatar!'+error)
+      alert('Error uploading avatar!' + error)
     } finally {
       setUploading(false)
     }
